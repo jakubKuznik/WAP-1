@@ -1,0 +1,67 @@
+>>>>>>>>>> Ukázka 1 (translace)
+Methionin
+Fenylalanin
+Serin
+>>>>>>>>>> Ukázka 2 (terminační kodóny)
+>>>>>>>>>> Ukázka 3 (translace všech aminokyselin)
+Fenylalanin
+Fenylalanin
+Leucin
+Leucin
+Leucin
+Leucin
+Leucin
+Leucin
+Isoleucin
+Isoleucin
+Isoleucin
+Methionin
+Valin
+Valin
+Valin
+Valin
+Serin
+Serin
+Serin
+Serin
+Prolin
+Prolin
+Prolin
+Prolin
+Threonin
+Threonin
+Threonin
+Threonin
+Alanin
+Alanin
+Alanin
+Alanin
+Tyrosin
+Tyrosin
+>>>>>>>>>> Ukázka 4 (nevalidní řetězec)
+TranslationError
+>>>>>>>>>> Ukázka 5 (zpracování kodńu před nevalidním řetězcem)
+Methionin
+TranslationError
+>>>>>>>>>> Ukázka 6 (krátký kodon))
+TranslationError
+>>>>>>>>>> Ukázka 7 (nezávislé iterátory)
+Methionin
+Fenylalanin
+Methionin
+Serin
+Fenylalanin
+Serin
+Methionin
+>>>>>>>>>> Ukázka 8 (nezávislé objekty a řetězec prototypů)
+false
+false
+true
+true
+true
+false
+true
+true
+>>>>>>>>>> Ukázka 9 (jméno aminokyseliny není součástí každého objektu)
+false
+true
