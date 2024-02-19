@@ -90,22 +90,23 @@ export function* translate(mRNA){
         GGG: "Glycin",
     }
 
-
-    
-    console.log(mRNA);
-    
     if (mRNA.length % 3 != 0){
         // todo TranslationError
         console.log("Wrong");
     }
-
 
     // slice the string to 3 chars 
     for (let i = 0; i < mRNA.length; i += 3){
         
         let aminoStr = mRNA.substring(i, i+3);
         
-        // todo if STOP
+        if (aminoacidTable[aminoStr] == "STOP"){
+            break;
+        }
+        if (!(aminoStr in aminoacidTable)){
+            console.log("Very BAD");
+        }
+
         // todo if unvalid 
 
         if (!acidPrototypes.has(aminoStr)){
@@ -113,20 +114,17 @@ export function* translate(mRNA){
             acidPrototypes.set(aminoStr, aProt);
         }
 
-
         // Get the prototype from the map
         let aminoProto = acidPrototypes.get(aminoStr);
         let aminoObj = Object.create(aminoProto);
         
-        console.log(aminoStr);
-        console.log(Object.getPrototypeOf(aminoProto));
-        console.log(Object.getPrototypeOf(aminoObj));
-
-        console.log(Object.getPrototypeOf(aminoObj) === aminoProto);
+        // console.log(aminoStr);
+        // console.log(Object.getPrototypeOf(aminoProto));
+        // console.log(Object.getPrototypeOf(aminoObj));
+        // console.log(Object.getPrototypeOf(aminoObj) === aminoProto);
+        yield aminoObj;
 
     }
-    
-    yield mRNA; 
 }
 
 
