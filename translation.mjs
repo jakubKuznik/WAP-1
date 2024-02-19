@@ -1,5 +1,18 @@
 "use strict";
 
+// It is forbiden to use classes of EcmaScript 2015
+/**
+* 
+*/
+export function BaseAminoAcid (name) {
+    
+    // Object has to be created in the way so name of each aminoacid is there only once!    
+
+    this.name = name; 
+    
+
+}
+
 
 /** Generator which has mRNA code on its input (for example "AUGUUUUCU")
 * 
@@ -8,9 +21,9 @@
 */
 export function* translate(mRNA){
 
-    var acidPrototypes = new Map();
+    const acidPrototypes = new Map();
 
-    const aminoacids = {
+    const aminoacidTable = {
         UUU: "Fenylalanin",
         UUC: "Fenylalanin",
         UUA: "Leucin",
@@ -91,39 +104,31 @@ export function* translate(mRNA){
     for (let i = 0; i < mRNA.length; i += 3){
         
         let aminoStr = mRNA.substring(i, i+3);
+        
+        // todo if STOP
+        // todo if unvalid 
 
-        if (!acidPrototypes.has(aminoacids[aminoStr])) {
-            acidPrototypes.set(aminoacids[aminoStr], Object.create(BaseAminoAcid));
+        if (!acidPrototypes.has(aminoStr)){
+            let aProt = new BaseAminoAcid(aminoacidTable[aminoStr]);
+            acidPrototypes.set(aminoStr, aProt);
         }
 
-        let aminoProt = acidPrototypes.get(aminoacids[aminoStr]);
-        
 
-        var aminoObj = Object.create(aminoProt);
+        // Get the prototype from the map
+        let aminoProto = acidPrototypes.get(aminoStr);
+        let aminoObj = Object.create(aminoProto);
         
         console.log(aminoStr);
-        console.log(Object.getPrototypeOf(aminoProt));
+        console.log(Object.getPrototypeOf(aminoProto));
         console.log(Object.getPrototypeOf(aminoObj));
 
+        console.log(Object.getPrototypeOf(aminoObj) === aminoProto);
 
     }
     
     yield mRNA; 
 }
 
-// It is forbiden to use classes of EcmaScript 2015
-/**
-* 
-* @param {*} name czech name of an aminoacid
-*/
-export function BaseAminoAcid (name) {
-    
-    // Object has to be created in the way so name of each aminoacid is there only once!    
-
-    this.name = name; 
-    
-
-}
 
 // Programe this using EcmaScript 2015 classes 
 /**
