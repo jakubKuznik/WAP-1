@@ -12,6 +12,8 @@ for (let aminoAcid of translate("AUGUUUUCU")) {
 	console.log(aminoAcid.name);
 }
 
+/**
+
 /// Zpracování terminačního kodonu
 console.log(">>>>>>>>>> Ukázka 2 (terminační kodóny)");
 for (let aminoAcid of translate("UAG")) {
@@ -95,3 +97,7 @@ console.log(l1 instanceof BaseAminoAcid); // true
 console.log(">>>>>>>>>> Ukázka 9 (jméno aminokyseliny není součástí každého objektu)");
 console.log(l1.hasOwnProperty("name")); // false
 console.log(l1.__proto__.hasOwnProperty("name")); // true
+
+ 
+
+*/
