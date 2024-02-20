@@ -1,16 +1,25 @@
 "use strict";
 
+// Programe this using EcmaScript 2015 classes 
+/**
+ * 
+ */
+export class TranslationError extends Error {
+
+    constructor(message, code) {
+        super(message); 
+        this.name = 'TranslationError'; 
+    }
+}
+
+
 // It is forbiden to use classes of EcmaScript 2015
 /**
 * 
 */
 export function BaseAminoAcid (name) {
-    
     // Object has to be created in the way so name of each aminoacid is there only once!    
-
     this.name = name; 
-    
-
 }
 
 
@@ -90,9 +99,9 @@ export function* translate(mRNA){
         GGG: "Glycin",
     }
 
+    // code in wrong format 
     if (mRNA.length % 3 != 0){
-        // todo TranslationError
-        console.log("Wrong");
+        throw new TranslationError("TranslationError")
     }
 
     // slice the string to 3 chars 
@@ -100,41 +109,22 @@ export function* translate(mRNA){
         
         let aminoStr = mRNA.substring(i, i+3);
         
-        if (aminoacidTable[aminoStr] == "STOP"){
+        // amino does not exists 
+        if (!(aminoStr in aminoacidTable)){
+            throw new TranslationError("TranslationError")
+        }
+        else if (aminoacidTable[aminoStr] == "STOP"){
             break;
         }
-        if (!(aminoStr in aminoacidTable)){
-            console.log("Very BAD");
-        }
-
-        // todo if unvalid 
-
-        if (!acidPrototypes.has(aminoStr)){
+        else if (!acidPrototypes.has(aminoStr)){
             let aProt = new BaseAminoAcid(aminoacidTable[aminoStr]);
             acidPrototypes.set(aminoStr, aProt);
         }
 
-        // Get the prototype from the map
         let aminoProto = acidPrototypes.get(aminoStr);
         let aminoObj = Object.create(aminoProto);
         
-        // console.log(aminoStr);
-        // console.log(Object.getPrototypeOf(aminoProto));
-        // console.log(Object.getPrototypeOf(aminoObj));
-        // console.log(Object.getPrototypeOf(aminoObj) === aminoProto);
         yield aminoObj;
 
-    }
-}
-
-
-// Programe this using EcmaScript 2015 classes 
-/**
- * 
- */
-export class TranslationError extends Error {
-
-    constructor (foo){
-        this.foo = foo;
     }
 }
