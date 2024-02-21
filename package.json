@@ -1,0 +1,15 @@
+{
+  "name": "translate",
+  "version": "1.0.0",
+  "description": "Module for translating mRNA into the aminoacids.",
+  "main": "test.mjs",
+  "type": "module",
+  "scripts": {
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+  },
+  "author": "Jakub Kuznik",
+  "license": "MIT",
+  "dependencies": {
+    "jest": "^29.7.0"
+  }
+}

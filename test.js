@@ -1,19 +1,39 @@
-'use strict'
-/**
- * \brief Ukázkový skript pro první projekt předmětu WAP
- */
+'use strict';
 
-/// Využijeme knihovnu, která je předmětem zadání projektu
-import { translate } from "./translation.mjs";
+import { translate } from './translation.mjs';
 
-/// knihovna musí obsahovat generátor translationTable. Ukázka jeho použití
-console.log(">>>>>>>>>> Ukázka 1 (translace)");
-for (let aminoAcid of translate("AUGUUUUCU")) {
-	console.log(aminoAcid.name);
-}
 
-/**
+const aminoOne = "AUGUUUUCU";
+const expAminOne = ['Methionin', 'Fenylalanin', 'Serin'];
 
+// This test case is from Dr. Polcak expected output 
+test('Translate AUGUUUUCU', () => {
+  
+  const iterator = translate(aminoOne);
+  
+  for (let i = 0; i < expAminOne.length; i++) {
+    const aminoAcid = iterator.next().value;
+    expect(aminoAcid.name).toBe(expAminOne[i]);
+  }
+
+});
+
+// This test case is from Dr. Polcak expected output 
+test('Translate AUGUUUCU and check next', () => {
+  
+  const iterator = translate(aminoOne);
+  
+  for (let i = 0; i < expAminOne.length; i++) {
+    const aminoAcid = iterator.next().value;
+    expect(aminoAcid.name).toBe(expAminOne[i]);
+  }
+  
+  // Check if there are no more amino acids
+  expect(iterator.next().done).toBe(true);
+
+});
+
+/*
 /// Zpracování terminačního kodonu
 console.log(">>>>>>>>>> Ukázka 2 (terminační kodóny)");
 for (let aminoAcid of translate("UAG")) {
@@ -34,6 +54,7 @@ console.log(">>>>>>>>>> Ukázka 3 (translace všech aminokyselin)");
 for (let aminoAcid of translate("UUUUUCUUAUUGCUUCUCCUACUGAUUAUCAUAAUGGUUGUCGUAGUGUCUUCCUCAUCGCCUCCCCCACCGACUACCACAACGGCUGCCGCAGCGUAUUACUAAUAGCAUCACCAACAGAAUAACAAAAAGGAUGACGAAGAGUGUUGCUGAUGGCGUCGCCGACGGAGUAGCAGAAGGGGUGGCGGAGGG")) {
 	console.log(aminoAcid.name);
 }
+
 
 /// knihovana generuje výjimku pro nevalidní řetězce
 import { TranslationError } from "./translation.mjs";
@@ -98,6 +119,4 @@ console.log(">>>>>>>>>> Ukázka 9 (jméno aminokyseliny není součástí každ�
 console.log(l1.hasOwnProperty("name")); // false
 console.log(l1.__proto__.hasOwnProperty("name")); // true
 
- 
-
-*/
+ */
