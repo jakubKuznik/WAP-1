@@ -3,51 +3,137 @@
 import { translate } from './translation.mjs';
 
 
-const aminoOne = "AUGUUUUCU";
-const expAminOne = ['Methionin', 'Fenylalanin', 'Serin'];
+
+/*
+>>>>>>>>>> Ukázka 1 (translace)
+Methionin
+Fenylalanin
+Serin
+*/
 
 // This test case is from Dr. Polcak expected output 
 test('Translate AUGUUUUCU', () => {
+
+	const aminoOne = "AUGUUUUCU";
+	const expAminOne = ['Methionin', 'Fenylalanin', 'Serin'];
   
-  const iterator = translate(aminoOne);
+	const iterator = translate(aminoOne);
   
-  for (let i = 0; i < expAminOne.length; i++) {
-    const aminoAcid = iterator.next().value;
-    expect(aminoAcid.name).toBe(expAminOne[i]);
-  }
+	for (let i = 0; i < expAminOne.length; i++) {
+		const aminoAcid = iterator.next().value;
+		expect(aminoAcid.name).toBe(expAminOne[i]);
+	}
 
 });
 
 // This test case is from Dr. Polcak expected output 
 test('Translate AUGUUUCU and check next', () => {
+	
+	const aminoOne = "AUGUUUUCU";
+	const expAminOne = ['Methionin', 'Fenylalanin', 'Serin'];
   
-  const iterator = translate(aminoOne);
+	const iterator = translate(aminoOne);
   
-  for (let i = 0; i < expAminOne.length; i++) {
-    const aminoAcid = iterator.next().value;
-    expect(aminoAcid.name).toBe(expAminOne[i]);
-  }
+	for (let i = 0; i < expAminOne.length; i++) {
+		const aminoAcid = iterator.next().value;
+		expect(aminoAcid.name).toBe(expAminOne[i]);
+	}
   
-  // Check if there are no more amino acids
-  expect(iterator.next().done).toBe(true);
+	// Check if there are no more amino acids
+	expect(iterator.next().done).toBe(true);
 
 });
 
 /*
-/// Zpracování terminačního kodonu
-console.log(">>>>>>>>>> Ukázka 2 (terminační kodóny)");
-for (let aminoAcid of translate("UAG")) {
-	console.log("Sem se nedostaneme");
-}
-for (let aminoAcid of translate("UAGUUU")) {
-	console.log("Ani sem se nedostaneme");
-}
-for (let aminoAcid of translate("UAA")) {
-	console.log("Sem také ne");
-}
-for (let aminoAcid of translate("UGA")) {
-	console.log("Nedostaneme se ani sem");
-}
+>>>>>>>>>> Ukázka 2 (terminační kodóny)
+*/
+
+// This test case is from Dr. Polcak expected output 
+test("Test the termination value", () => {
+
+	for (let aminoAcid of translate("UAG")) {
+		fail("We should not reach this.");
+	}
+	for (let aminoAcid of translate("UAGUUU")) {
+		fail("We should not reach this.");
+	}
+	for (let aminoAcid of translate("UAA")) {
+		fail("We should not reach this.");
+	}
+	for (let aminoAcid of translate("UGA")) {
+		fail("We should not reach this.");
+	}
+})
+
+
+/*
+>>>>>>>>>> Ukázka 3 (translace všech aminokyselin)
+Fenylalanin
+Fenylalanin
+Leucin
+Leucin
+Leucin
+Leucin
+Leucin
+Leucin
+Isoleucin
+Isoleucin
+Isoleucin
+Methionin
+Valin
+Valin
+Valin
+Valin
+Serin
+Serin
+Serin
+Serin
+Prolin
+Prolin
+Prolin
+Prolin
+Threonin
+Threonin
+Threonin
+Threonin
+Alanin
+Alanin
+Alanin
+Alanin
+Tyrosin
+Tyrosin
+*/
+
+// This test case is from Dr. Polcak expected output 
+test("Complex translation", () => {
+	
+	const aminoOne = 
+		"UUUUUCUUAUUGCUUCUCCUACUGAUUAUCAUAAUGGUUGUCGUAG" +
+		"UGUCUUCCUCAUCGCCUCCCCCACCGACUACCACAACGGCUGCCGC" +
+		"AGCGUAUUACUAAUAGCAUCACCAACAGAAUAACAAAAAGGAUGAC" +
+		"GAAGAGUGUUGCUGAUGGCGUCGCCGACGGAGUAGCAGAAGGGGUG" +
+		"GCGGAGGG";
+	const expAminOne = 	['Fenylalanin', 'Fenylalanin', 'Leucin', 'Leucin',
+						 'Leucin', 'Leucin', 'Leucin', 'Leucin', 'Isoleucin',
+						 'Isoleucin', 'Isoleucin', 'Methionin', 'Valin',
+						 'Valin', 'Valin', 'Valin', 'Serin', 'Serin', 'Serin',
+						 'Serin', 'Prolin', 'Prolin', 'Prolin', 'Prolin', 
+						 'Threonin','Threonin', 'Threonin', 'Threonin', 
+						 'Alanin', 'Alanin', 'Alanin', 'Alanin', 'Tyrosin', 
+						 'Tyrosin'];
+
+	const iterator = translate(aminoOne);
+  
+	for (let i = 0; i < expAminOne.length; i++) {
+		const aminoAcid = iterator.next().value;
+		expect(aminoAcid.name).toBe(expAminOne[i]);
+	}
+					   
+	// Check if there are no more amino acids
+	expect(iterator.next().done).toBe(true);
+})
+
+/*
 
 /// knihovna musí správně zpracovat všechny kodóny:
 console.log(">>>>>>>>>> Ukázka 3 (translace všech aminokyselin)");

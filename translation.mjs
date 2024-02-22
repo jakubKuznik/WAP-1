@@ -6,7 +6,7 @@
  */
 export class TranslationError extends Error {
 
-    constructor(message, code) {
+    constructor(message) {
         super(message); 
         this.name = 'TranslationError'; 
     }
@@ -101,17 +101,17 @@ export function* translate(mRNA){
 
     // code in wrong format 
     if (mRNA.length % 3 != 0){
-        throw new TranslationError("TranslationError")
+        throw new TranslationError("TranslationError: mRNAcode has invalid lenght.");
     }
 
-    // slice the string to 3 chars 
+    // slice the string into the 3 chars (amino codes)
     for (let i = 0; i < mRNA.length; i += 3){
         
         let aminoStr = mRNA.substring(i, i+3);
         
         // amino does not exists 
         if (!(aminoStr in aminoacidTable)){
-            throw new TranslationError("TranslationError")
+            throw new TranslationError("TranslationError: Unknown amino acid code ");
         }
         else if (aminoacidTable[aminoStr] == "STOP"){
             break;
@@ -125,6 +125,5 @@ export function* translate(mRNA){
         let aminoObj = Object.create(aminoProto);
         
         yield aminoObj;
-
     }
 }
