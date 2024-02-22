@@ -1,15 +1,13 @@
 'use strict';
 
+/* 
+ * This file contains unit tests in jest framework for translation.mjs library 
+ */
+
+
 import { translate } from './translation.mjs';
+import { BaseAminoAcid } from "./translation.mjs";
 
-
-
-/*
->>>>>>>>>> Ukázka 1 (translace)
-Methionin
-Fenylalanin
-Serin
-*/
 
 // This test case is from Dr. Polcak expected output 
 test('Translate AUGUUUUCU', () => {
@@ -45,7 +43,7 @@ test('Translate AUGUUUCU and check next', () => {
 });
 
 /*
->>>>>>>>>> Ukázka 2 (terminační kodóny)
+>>>>>>>>>> Expected output:  
 */
 
 // This test case is from Dr. Polcak expected output 
@@ -64,45 +62,6 @@ test("Test the termination value", () => {
 		fail("We should not reach this.");
 	}
 })
-
-
-/*
->>>>>>>>>> Ukázka 3 (translace všech aminokyselin)
-Fenylalanin
-Fenylalanin
-Leucin
-Leucin
-Leucin
-Leucin
-Leucin
-Leucin
-Isoleucin
-Isoleucin
-Isoleucin
-Methionin
-Valin
-Valin
-Valin
-Valin
-Serin
-Serin
-Serin
-Serin
-Prolin
-Prolin
-Prolin
-Prolin
-Threonin
-Threonin
-Threonin
-Threonin
-Alanin
-Alanin
-Alanin
-Alanin
-Tyrosin
-Tyrosin
-*/
 
 // This test case is from Dr. Polcak expected output 
 test("Complex translation", () => {
@@ -133,76 +92,150 @@ test("Complex translation", () => {
 	expect(iterator.next().done).toBe(true);
 })
 
-/*
+// This test case is from Dr. Polcak expected output 
+test("Invalid codon", () => {
+	const aminoInvalid = "XXX"; 
 
-/// knihovna musí správně zpracovat všechny kodóny:
-console.log(">>>>>>>>>> Ukázka 3 (translace všech aminokyselin)");
-for (let aminoAcid of translate("UUUUUCUUAUUGCUUCUCCUACUGAUUAUCAUAAUGGUUGUCGUAGUGUCUUCCUCAUCGCCUCCCCCACCGACUACCACAACGGCUGCCGCAGCGUAUUACUAAUAGCAUCACCAACAGAAUAACAAAAAGGAUGACGAAGAGUGUUGCUGAUGGCGUCGCCGACGGAGUAGCAGAAGGGGUGGCGGAGGG")) {
-	console.log(aminoAcid.name);
-}
+	expect(() => {
+		for (let aminoAcid of translate(aminoInvalid)) {
+			fail("The code should not be translated.");
+		}
+	}).toThrowError("TranslationError: Unknown amino acid code.");
+})
+
+// This test case is from Dr. Polcak expected output 
+test("Invalid codon", () => {
+
+	const aminoInvalid = "AUGXXX"; 
+	
+	const expAminOne = ['Methionin'];
+	
+	const iterator = translate(aminoInvalid);
+	const aminoAcid = iterator.next().value;
+	expect(aminoAcid.name).toBe(expAminOne[0]);
+
+	expect(() => {
+		aminoAcid = iterator.next().value;
+		expect(aminoAcid.name).toBe(expAminOne[0]);
+	}).toThrowError("TranslationError: Unknown amino acid code.");
+})
+
+// This test case is from Dr. Polcak expected output 
+test("Short codon", () => {
+	const aminoInvalid = "AU"; 
+
+	expect(() => {
+		for (let aminoAcid of translate(aminoInvalid)) {
+			fail("The code should not be translated.");
+		}
+	}).toThrowError("TranslationError: mRNA code has invalid length.");
+})
+
+// This test case is from Dr. Polcak expected output 
+test('Independent translations', () => {
+
+	const aminoOne = "AUGUUUUCUAUG";
+	const exp = ['Methionin', 'Fenylalanin', 'Methionin',
+				'Serin', 'Fenylalanin', "Serin", "Methionin"];
+
+  
+	const iterator1  = translate(aminoOne);
+	const iterator2 = translate(aminoOne); 
+
+	let aminoAcid = "";
+
+	// iterator 1
+	aminoAcid = iterator1.next().value;
+	expect(aminoAcid.name).toBe(exp[0]);
+	aminoAcid = iterator1.next().value;
+	expect(aminoAcid.name).toBe(exp[1]);
+	
+	// iterator 2 
+	aminoAcid = iterator2.next().value;
+	expect(aminoAcid.name).toBe(exp[2])
+
+	// iterator 1
+	aminoAcid = iterator1.next().value;
+	expect(aminoAcid.name).toBe(exp[3]);
+	
+	// iterator 2 
+	aminoAcid = iterator2.next().value;
+	expect(aminoAcid.name).toBe(exp[4])
+	aminoAcid = iterator2.next().value;
+	expect(aminoAcid.name).toBe(exp[5])
+	
+	// iterator 1
+	aminoAcid = iterator1.next().value;
+	expect(aminoAcid.name).toBe(exp[6]);
+
+});
+
+// This test case is from Dr. Polcak expected output 
+test('Independent objects', () => {
+
+	const aminoOne   = "AUGAUGAUGAUGAUGAUGAUGAUGAUGAUG"; 
+	const aminotTwo  = "UUAUUA"; 
+	const iterator1  = translate(aminoOne);
+	const iterator2  = translate(aminotTwo);
+	
+	expect(iterator1.next().value === iterator1.next().value).toBe(false);
+	
+	let m1 = iterator1.next().value;
+	let m2 = iterator1.next().value;
+
+	expect(m1 === m2).toBe(false);
+
+	expect(m1 instanceof BaseAminoAcid).toBe(true);
+	expect(m2 instanceof BaseAminoAcid).toBe(true);
+	
+	expect(m1.__proto__ === m2.__proto__).toBe(true);
+	
+	expect({} instanceof BaseAminoAcid).toBe(false);
+
+	let l1 = iterator2.next().value;
+	expect(l1.__proto__ !== m1.__proto__).toBe(true);
+	expect(l1 instanceof BaseAminoAcid).toBe(true);
+
+});
 
 
-/// knihovana generuje výjimku pro nevalidní řetězce
-import { TranslationError } from "./translation.mjs";
-console.log(">>>>>>>>>> Ukázka 4 (nevalidní řetězec)");
-try {
-	for (let aminoAcid of translate("XXX")) {
-	}
-}
-catch (e) {
-	console.log(e.name); // e.message je např. Unknown codon XXX
-}
-console.log(">>>>>>>>>> Ukázka 5 (zpracování kodńu před nevalidním řetězcem)");
-try {
-	for (let aminoAcid of translate("AUGXXX")) {
-		console.log(aminoAcid.name);
-	}
-}
-catch (e) {
-	console.log(e.name); // e.message je např. Unknown codon XXX
-}
-console.log(">>>>>>>>>> Ukázka 6 (krátký kodon))");
-try {
-	for (let aminoAcid of translate("AU")) {
-		console.log(aminoAcid.name);
-	}
-}
-catch (e) {
-	console.log(e.name); // e.message je např. Sequence AU not processed
-}
+// This test case is from Dr. Polcak expected output 
+test('Amino acid name is not part of each object.', () => {
 
-/// Iterátorů  vrácených generátorem je možné vytvořit více, vzájemně budou na
-/// sobě nezávislé.
-console.log(">>>>>>>>>> Ukázka 7 (nezávislé iterátory)");
-let it1 = translate("AUGUUUUCUAUG")
-console.log(it1.next().value.name); // Methionin
-console.log(it1.next().value.name); // Fenylalanin
-let it2 = translate("AUGUUUUCUAUG")
-console.log(it2.next().value.name); // Methionin
-console.log(it1.next().value.name); // Serin
-console.log(it2.next().value.name); // Fenylalanin
-console.log(it2.next().value.name); // Serin
-console.log(it1.next().value.name); // Methionin
+	const aminoOne   = "AUGAUGAUGAUGAUGAUGAUGAUGAUGAUG"; 
+	const aminotTwo  = "UUAUUA"; 
+	const iterator1  = translate(aminoOne);
+	const iterator2  = translate(aminotTwo);
+	
+	expect(iterator1.next().value === iterator1.next().value).toBe(false);
+	
+	let m1 = iterator1.next().value;
+	let m2 = iterator1.next().value;
 
-/// Nezávislé objekty
-console.log(">>>>>>>>>> Ukázka 8 (nezávislé objekty a řetězec prototypů)");
-let it3 = translate("AUGAUGAUGAUGAUGAUGAUGAUGAUGAUG");
-console.log(it3.next().value === it3.next().value); // false, different objects
-let m1 = it3.next().value;
-let m2 = it3.next().value;
-console.log(m1 ===  m2); // false, different objects
-import { BaseAminoAcid } from "./translation.mjs";
-console.log(m1 instanceof BaseAminoAcid); // true
-console.log(m2 instanceof BaseAminoAcid); // true
-console.log(m1.__proto__ === m2.__proto__); // true, both Methionine
-console.log({} instanceof BaseAminoAcid); // false
-let it4 = translate("UUAUUA");
-let l1 = it4.next().value;
-console.log(l1.__proto__ !== m1.__proto__); // true, different aminoacides
-console.log(l1 instanceof BaseAminoAcid); // true
+	expect(m1 === m2).toBe(false);
 
-console.log(">>>>>>>>>> Ukázka 9 (jméno aminokyseliny není součástí každého objektu)");
-console.log(l1.hasOwnProperty("name")); // false
-console.log(l1.__proto__.hasOwnProperty("name")); // true
+	expect(m1 instanceof BaseAminoAcid).toBe(true);
+	expect(m2 instanceof BaseAminoAcid).toBe(true);
+	
+	expect(m1.__proto__ === m2.__proto__).toBe(true);
+	
+	expect({} instanceof BaseAminoAcid).toBe(false);
 
- */
+	let l1 = iterator2.next().value;
+	expect(l1.__proto__ !== m1.__proto__).toBe(true);
+	expect(l1 instanceof BaseAminoAcid).toBe(true);
+
+	expect(l1.hasOwnProperty("name")).toBe(false);
+	expect(l1.__proto__.hasOwnProperty("name")).toBe(true);
+
+});
+
+
+test("Empty codon", () => {
+
+	const aminoInvalid = ""; 
+	const iterator = translate(aminoInvalid);
+	const aminoAcid = iterator.next().value;
+    expect(aminoAcid).toBeUndefined();
+
+})

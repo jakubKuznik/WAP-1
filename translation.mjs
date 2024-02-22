@@ -100,8 +100,8 @@ export function* translate(mRNA){
     }
 
     // code in wrong format 
-    if (mRNA.length % 3 != 0){
-        throw new TranslationError("TranslationError: mRNAcode has invalid lenght.");
+    if (mRNA.length % 3 !== 0){
+        throw new TranslationError("TranslationError: mRNA code has invalid length.");
     }
 
     // slice the string into the 3 chars (amino codes)
@@ -111,9 +111,9 @@ export function* translate(mRNA){
         
         // amino does not exists 
         if (!(aminoStr in aminoacidTable)){
-            throw new TranslationError("TranslationError: Unknown amino acid code ");
+            throw new TranslationError("TranslationError: Unknown amino acid code.");
         }
-        else if (aminoacidTable[aminoStr] == "STOP"){
+        else if (aminoacidTable[aminoStr] === "STOP"){
             break;
         }
         else if (!acidPrototypes.has(aminoStr)){
