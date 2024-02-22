@@ -5,11 +5,15 @@
   "main": "test.mjs",
   "type": "module",
   "scripts": {
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "jsdoc": "node_modules/.bin/jsdoc -c jsdoc.json"
   },
   "author": "Jakub Kuznik",
   "license": "MIT",
   "dependencies": {
     "jest": "^29.7.0"
+  },
+  "devDependencies": {
+    "jsdoc": "^4.0.2"
   }
 }
