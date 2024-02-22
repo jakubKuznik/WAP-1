@@ -6,7 +6,7 @@ if [ $# -eq 0 ]; then
 fi
 
 if [ "$1" = "install" ]; then
-    npm install
+    npm install --save-dev
 else
     echo "Unknown argument (know only install)"
 fi

@@ -1,2 +1,3 @@
 #!/bin/bash
-echo "doc"
+npm install --save-dev 
+npm run jsdoc 
