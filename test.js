@@ -4,10 +4,8 @@
  * This file contains unit tests in jest framework for translation.mjs library 
  */
 
-
 import { translate } from './translation.mjs';
 import { BaseAminoAcid } from "./translation.mjs";
-
 
 // This test case is from Dr. Polcak expected output 
 test('Translate AUGUUUUCU', () => {
@@ -41,10 +39,6 @@ test('Translate AUGUUUCU and check next', () => {
 	expect(iterator.next().done).toBe(true);
 
 });
-
-/*
->>>>>>>>>> Expected output:  
-*/
 
 // This test case is from Dr. Polcak expected output 
 test("Test the termination value", () => {
@@ -137,7 +131,6 @@ test('Independent translations', () => {
 	const aminoOne = "AUGUUUUCUAUG";
 	const exp = ['Methionin', 'Fenylalanin', 'Methionin',
 				'Serin', 'Fenylalanin', "Serin", "Methionin"];
-
   
 	const iterator1  = translate(aminoOne);
 	const iterator2 = translate(aminoOne); 
@@ -198,7 +191,6 @@ test('Independent objects', () => {
 
 });
 
-
 // This test case is from Dr. Polcak expected output 
 test('Amino acid name is not part of each object.', () => {
 
@@ -230,7 +222,6 @@ test('Amino acid name is not part of each object.', () => {
 
 });
 
-
 test("Empty codon", () => {
 
 	const aminoInvalid = ""; 
@@ -239,3 +230,72 @@ test("Empty codon", () => {
     expect(aminoAcid).toBeUndefined();
 
 })
+
+test("STOP flag in the end.", () => {
+	
+	const aminoOne = "UUUUAA";
+	const expAminOne = 	['Fenylalanin'];
+
+	const iterator = translate(aminoOne);
+	
+	let aminoAcid = iterator.next().value;
+	expect(aminoAcid.name).toBe(expAminOne[0]);
+					   
+	expect(iterator.next().done).toBe(true);
+})
+
+test("STOP flag in the middle.", () => {
+	
+	const aminoOne = "UUUUAAUUU";
+	const expAminOne = 	['Fenylalanin'];
+
+	const iterator = translate(aminoOne);
+	
+	let aminoAcid = iterator.next().value;
+	expect(aminoAcid.name).toBe(expAminOne[0]);
+					   
+	
+	expect(() => {
+		aminoAcid = iterator.next().next();
+	}).toThrowError(TypeError);
+})
+
+test("", () => {
+	
+	const aminoOne = "UUUUAAUUU";
+	const expAminOne = 	['Fenylalanin'];
+
+	const iterator = translate(aminoOne);
+	
+	let aminoAcid = iterator.next().value;
+	expect(aminoAcid.name).toBe(expAminOne[0]);
+					   
+	
+	expect(() => {
+		aminoAcid = iterator.next().next();
+	}).toThrowError(TypeError);
+})
+
+test("Invalid codon numbers", () => {
+	const aminoInvalid = 999; 
+
+	expect(() => {
+		for (let aminoAcid of translate(aminoInvalid)) {
+			fail("The code should not be translated.");
+		}
+	}).toThrowError("TranslationError: Unknown amino acid code.");
+})
+
+test("Invalid codon special character", () => {
+	const aminoInvalid = "#$)"; 
+
+	expect(() => {
+		for (let aminoAcid of translate(aminoInvalid)) {
+			fail("The code should not be translated.");
+		}
+	}).toThrowError("TranslationError: Unknown amino acid code.");
+})
+
+
+
+

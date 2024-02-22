@@ -2,10 +2,14 @@
 
 // Programe this using EcmaScript 2015 classes 
 /**
- * 
+ * Translation Error is custom error class 
+ * for the translation librarry. 
  */
 export class TranslationError extends Error {
 
+    /**
+     * @param {String} message Error message that will be thrown. 
+     */
     constructor(message) {
         super(message); 
         this.name = 'TranslationError'; 
@@ -15,18 +19,23 @@ export class TranslationError extends Error {
 
 // It is forbiden to use classes of EcmaScript 2015
 /**
-* 
-*/
+ * Class represent one Amino acid.
+ * There is only one prototype of the aminoacid objects with same name,
+ * but the objects are different.  
+ * @param {string} name Holds the czech aminoacid name. 
+ */
 export function BaseAminoAcid (name) {
-    // Object has to be created in the way so name of each aminoacid is there only once!    
+
     this.name = name; 
 }
 
 
-/** Generator which has mRNA code on its input (for example "AUGUUUUCU")
+/** Generator Function which has mRNA code on its input (for example "AUGUUUUCU").
+* Next aminoacid can be accesed throughout the iterator.  
 * 
-* @param mRNA
-* @return
+* @param {String} mRNA String that is mRNA codon, that we want to translate.
+* 
+* @return next BaseAminoAcid object or nothing. 
 */
 export function* translate(mRNA){
 
@@ -97,6 +106,10 @@ export function* translate(mRNA){
         GGC: "Glycin",
         GGA: "Glycin",
         GGG: "Glycin",
+    }
+    
+    if (typeof mRNA !== "string") {
+        mRNA = mRNA.toString();
     }
 
     // code in wrong format 
