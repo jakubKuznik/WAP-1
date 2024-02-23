@@ -1,5 +1,4 @@
 #!/bin/bash
-#!/bin/bash
 
 if [ $# -eq 0 ]; then
     npm run jsdoc 
