@@ -1,4 +1,10 @@
 'use strict';
+// name:    Jakub Kuznik 
+// login:   xkuzni04 
+// faculty: VUT FIT 
+// course:  WAP - 2024
+// node.js: v20.11.1
+
 
 /* 
  * This file contains unit tests in jest framework for translation.mjs library 

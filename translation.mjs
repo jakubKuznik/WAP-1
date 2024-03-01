@@ -1,4 +1,10 @@
 "use strict";
+// name:    Jakub Kuznik 
+// login:   xkuzni04 
+// faculty: VUT FIT 
+// course:  WAP - 2024
+// node.js: v20.11.1
+
 
 // Programe this using EcmaScript 2015 classes 
 /**
