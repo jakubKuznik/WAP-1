@@ -1,6 +1,15 @@
 # Body
-TBD
-
+8/10
+Text zprávy:
+Dobrá dokumentace knihovny
+Čitelná implementace, ale není jasné, proč se aminokyseliny (ř. 138-140) vytvářejí až v průběhu translace
+Dobře řešené testy
+Úspěšný test obsahující ukázkový skript
+Úspěšný test správnosti zpracování všech validních kodonu
+Úspěšný test ověřující vytváření nových objektů
+Úspěšný test ověřující zpracování stop kodonů
+Úspěšný test ověřující chování pro velmi dlouhou mRNA
+Velmi pomalá implementace
 # Knihovna pro překlad mRNA na aminokyseliny
 
 ## Popis
